@@ -93,6 +93,83 @@ var Checkers = checker.Checkers{
 	),
 
 	checker.NewSimpleChecker(
+		"理系基礎科目",
+		"18単位以上取得すること。",
+		checkfuncs.WithFilter(
+			checkfuncs.CreditBorder(18),
+			func(s *nucredit.Subject) bool {
+				return strings.Contains(s.Category, "理系基礎科目")
+			},
+		),
+	),
+
+	checker.NewSimpleChecker(
+		"微積・線形ⅠⅡ",
+		"微分積分学I，微分積分学II，線形代数学I及び線形代数学IIの4科目8単位を含むこと。",
+		checkfuncs.AcquiredAll(
+			"微分積分学1",
+			"微分積分学2",
+			"線形代数学1",
+			"線形代数学2",
+		),
+	),
+
+	checker.NewSimpleChecker(
+		"理科基礎・実験",
+		"「物理学基礎I，物理学基礎II及び物理学実験」，「化学基礎I，化学基礎II及び化学実験」，「生物学基礎I，生物学基礎II及び生物学実験」又は「地球科学基礎I，地球科学基礎II及び地球科学実験」のうちから1組，3科目，計5.5単位を含むこと。前号以外の「物理学基礎I及び物理学基礎II」，「化学基礎Ⅰ及び化学基礎Ⅱ」，「生物学基礎Ⅰ及び生物学基礎Ⅱ」又は「地球科学基礎Ⅰ及び地球科学基礎Ⅱ」から１組, 2科目，計4単位以上を含むこと。",
+		checkfuncs.OR(
+			checkfuncs.AND(
+				checkfuncs.AcquiredAll("物理学基礎1", "物理学基礎2"),
+				checkfuncs.AcquiredAll("化学基礎1", "化学基礎2"),
+				checkfuncs.OR(
+					checkfuncs.Acquired("物理学実験"),
+					checkfuncs.Acquired("化学実験"),
+				),
+			),
+			checkfuncs.AND(
+				checkfuncs.AcquiredAll("物理学基礎1", "物理学基礎2"),
+				checkfuncs.AcquiredAll("生物学基礎1", "生物学基礎2"),
+				checkfuncs.OR(
+					checkfuncs.Acquired("物理学実験"),
+					checkfuncs.Acquired("生物学実験"),
+				),
+			),
+			checkfuncs.AND(
+				checkfuncs.AcquiredAll("物理学基礎1", "物理学基礎2"),
+				checkfuncs.AcquiredAll("地球科学基礎1", "地球科学基礎2"),
+				checkfuncs.OR(
+					checkfuncs.Acquired("物理学実験"),
+					checkfuncs.Acquired("地球科学実験"),
+				),
+			),
+			checkfuncs.AND(
+				checkfuncs.AcquiredAll("化学基礎1", "化学基礎2"),
+				checkfuncs.AcquiredAll("生物学基礎1", "生物学基礎2"),
+				checkfuncs.OR(
+					checkfuncs.Acquired("化学実験"),
+					checkfuncs.Acquired("生物学実験"),
+				),
+			),
+			checkfuncs.AND(
+				checkfuncs.AcquiredAll("化学基礎1", "化学基礎2"),
+				checkfuncs.AcquiredAll("地球科学基礎1", "地球科学基礎2"),
+				checkfuncs.OR(
+					checkfuncs.Acquired("化学実験"),
+					checkfuncs.Acquired("地球科学実験"),
+				),
+			),
+			checkfuncs.AND(
+				checkfuncs.AcquiredAll("生物学基礎1", "生物学基礎2"),
+				checkfuncs.AcquiredAll("地球科学基礎1", "地球科学基礎2"),
+				checkfuncs.OR(
+					checkfuncs.Acquired("生物学実験"),
+					checkfuncs.Acquired("地球科学実験"),
+				),
+			),
+		),
+	),
+
+	checker.NewSimpleChecker(
 		"専門基礎科目",
 		"30単位以上取得すること。",
 		checkfuncs.WithFilter(
